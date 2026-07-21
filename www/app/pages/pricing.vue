@@ -122,7 +122,7 @@ const notes = [
           </ul>
 
           <UButton
-            :to="localePath('contact')"
+            :to="tier.key === 'enterprise' ? localePath('contact') : 'https://app.pasdiu.com'"
             :color="tier.highlighted ? 'primary' : 'neutral'"
             :variant="tier.highlighted ? 'solid' : 'outline'"
             block

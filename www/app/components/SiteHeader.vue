@@ -88,7 +88,7 @@ function toggleLocale() {
           {{ locale === 'en' ? 'ES' : 'EN' }}
         </button>
 
-        <UButton :to="localePath('contact')" color="primary" variant="solid" size="sm" class="pd-glow-cyan" toolaction="header_get_started">
+        <UButton to="https://app.pasdiu.com" color="primary" variant="solid" size="sm" class="pd-glow-cyan" toolaction="header_get_started">
           {{ t('SiteHeader.cta') }}
         </UButton>
       </div>
@@ -153,7 +153,7 @@ function toggleLocale() {
             >
               {{ locale === 'en' ? 'Español' : 'English' }}
             </button>
-            <UButton :to="localePath('contact')" color="primary" size="lg" class="pd-glow-cyan" @click="mobileOpen = false">
+            <UButton to="https://app.pasdiu.com" color="primary" size="lg" class="pd-glow-cyan" @click="mobileOpen = false">
               {{ t('SiteHeader.cta') }}
             </UButton>
           </div>

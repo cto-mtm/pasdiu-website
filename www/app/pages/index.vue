@@ -72,7 +72,7 @@ const roles = [
           {{ t('Index.hero.subtitle') }}
         </p>
         <div class="pd-enter pd-enter-delay-3 flex flex-wrap items-center gap-4">
-          <UButton :to="localePath('contact')" color="primary" size="xl" class="pd-glow-cyan">
+          <UButton to="https://app.pasdiu.com" color="primary" size="xl" class="pd-glow-cyan">
             {{ t('Index.hero.ctaPrimary') }}
           </UButton>
           <UButton :to="localePath('pricing')" color="neutral" variant="outline" size="xl">
@@ -130,7 +130,7 @@ const roles = [
       <div class="pd-reveal max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
         <h2 class="text-2xl sm:text-4xl mb-4">{{ t('Index.ctaBand.title') }}</h2>
         <p class="text-[var(--text-muted)] max-w-xl mx-auto mb-8">{{ t('Index.ctaBand.body') }}</p>
-        <UButton :to="localePath('contact')" color="primary" size="xl" class="pd-glow-cyan">
+        <UButton to="https://app.pasdiu.com" color="primary" size="xl" class="pd-glow-cyan">
           {{ t('Index.ctaBand.cta') }}
         </UButton>
       </div>

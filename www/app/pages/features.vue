@@ -79,7 +79,7 @@ const tour = [
       <div class="max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
         <h2 class="text-2xl sm:text-4xl mb-4">{{ t('Features.cta.title') }}</h2>
         <p class="text-[var(--text-muted)] max-w-xl mx-auto mb-8">{{ t('Features.cta.body') }}</p>
-        <UButton :to="localePath('contact')" color="primary" size="xl" class="pd-glow-cyan">
+        <UButton to="https://app.pasdiu.com" color="primary" size="xl" class="pd-glow-cyan">
           {{ t('Features.cta.button') }}
         </UButton>
       </div>
