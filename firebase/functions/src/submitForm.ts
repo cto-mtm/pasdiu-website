@@ -24,32 +24,12 @@ const ALLOWED_ORIGINS = [
 
 export const submitForm = onRequest(
   {
+    cors: ALLOWED_ORIGINS,
     region: "us-central1",
     maxInstances: 10,
     secrets: [GMAIL_USER, GMAIL_APP_PASSWORD, GMAIL_SENDER, RECAPTCHA_SECRET_KEY],
   },
   async (req, res) => {
-    const origin = req.headers.origin;
-
-    if (origin) {
-      if (ALLOWED_ORIGINS.includes(origin)) {
-        res.set("Access-Control-Allow-Origin", origin);
-        res.set("Vary", "Origin");
-      } else {
-        logger.warn("Unauthorized origin request rejected", { origin });
-        res.status(403).json({ success: false, error: "Unauthorized origin" });
-        return;
-      }
-    }
-
-    res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-    res.set("Access-Control-Allow-Headers", "Content-Type");
-
-    if (req.method === "OPTIONS") {
-      res.status(204).send("");
-      return;
-    }
-
     if (req.method !== "POST") {
       res.status(405).json({ success: false, error: "Method not allowed" });
       return;
