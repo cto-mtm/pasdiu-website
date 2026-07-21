@@ -99,22 +99,26 @@ export const submitForm = onRequest(
       const subject = `${config.subject} — ${name.replace(/[\r\n]/g, "")}`;
 
       try {
+        const userEmail = typeof parsed.email === "string" && parsed.email ? parsed.email : undefined;
+
         await transporter.sendMail({
           from,
           to: config.notifyEmail,
+          replyTo: userEmail,
           subject,
           html: buildNotificationEmail(config, parsed),
         });
         logger.info("Notification email sent", { formType, to: config.notifyEmail });
 
-        if (typeof parsed.email === "string" && parsed.email) {
+        if (userEmail) {
           await transporter.sendMail({
             from,
-            to: parsed.email,
+            to: userEmail,
+            replyTo: gmailSender,
             subject: config.confirmationSubject,
             html: buildConfirmationEmail(config, parsed),
           });
-          logger.info("Confirmation email sent", { formType, to: parsed.email });
+          logger.info("Confirmation email sent", { formType, to: userEmail });
         }
       } catch (mailErr) {
         const mailErrMsg = mailErr instanceof Error ? mailErr.message : String(mailErr);
