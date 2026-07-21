@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Nuxt 4 build outputs & caches
+www/.nuxt/
+www/.output/
+www/dist/
+www/.nitro/
+www/.cache/
+www/.data/
+
+# Firebase hosting staged static build & functions lib
+firebase/www/
+firebase/functions/lib/
+.firebase/
+firebase-debug.log
+firestore-debug.log
+pubsub-debug.log
+ui-debug.log
+
+# Environment & local secrets
+.env
+.env.*
+!.env.example
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo

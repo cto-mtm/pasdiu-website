@@ -1,0 +1,19 @@
+{
+  "name": "Pasdiu",
+  "description": "Client-work logistics hub for media creators — agencies, post-production studios, and freelance editor collectives.",
+  "url": "https://pasdiu.com",
+  "llms_txt_url": "https://pasdiu.com/llms.txt",
+  "llms_full_url": "https://pasdiu.com/llms-full.txt",
+  "pages": [
+    { "title": "Homepage", "url": "https://pasdiu.com/" },
+    { "title": "Features", "url": "https://pasdiu.com/features" },
+    { "title": "Pricing", "url": "https://pasdiu.com/pricing" },
+    { "title": "News", "url": "https://pasdiu.com/news" },
+    { "title": "Contact", "url": "https://pasdiu.com/contact" }
+  ],
+  "webmcp": {
+    "manifest": "https://pasdiu.com/webmcp.json",
+    "declarative": true,
+    "imperative": true
+  }
+}

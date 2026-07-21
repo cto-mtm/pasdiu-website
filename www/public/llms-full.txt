@@ -1,0 +1,103 @@
+# Pasdiu — Full Website Documentation & Knowledge Base
+
+This file contains the complete, unabridged content of the Pasdiu marketing website, structured for ingestion by Large Language Models (LLMs) and AI agents.
+
+---
+
+## 1. About Pasdiu
+
+Pasdiu is the client-work logistics hub for media creators. It is built specifically for post-production studios, video production agencies, motion designers, audio engineers, and freelance editor collectives.
+
+### Core Value Proposition
+- **Eliminate Feedback Chaos**: Consolidate client comments, timestamped video feedback, and revision approvals into a single, clean workspace.
+- **Client-Friendly Sign-offs**: Clear approval states prevent endless unbilled revision rounds.
+- **Cinematic Dark Design**: Built with a sleek, dark-mode-native user experience matching creative suite aesthetics.
+- **Multilingual Support**: Built-in support for English (`/`) and Spanish (`/es`).
+
+---
+
+## 2. Features Breakdown
+
+### Frame-Accurate Review
+- Precision playback controls for frame-by-frame video inspection.
+- Visual annotation tools (drawings, arrows, box highlights) pinned to exact timecodes.
+- Multi-track audio waveform commentary.
+
+### Version Comparison & Control
+- Side-by-side or wipe comparison between v1, v2, v3 renders.
+- Visual diffing for color grade changes, edit trims, and graphic revisions.
+- Automated client notification when a new version is uploaded.
+
+### Client Approval Pipelines
+- One-click formal approval buttons for client stakeholders.
+- Password-protected review links requiring zero account creation for clients.
+- Automated audit trail recording sign-off timestamps and approved file hashes.
+
+---
+
+## 3. Pricing & Plans
+
+Pasdiu offers flexible seat-based subscription tiers. All paid tiers include a 20% discount when billed annually.
+
+### Tier Matrix
+
+1. **Free Tier**
+   - **Cost**: $0 / month
+   - **Included Seats**: 2 seats included
+   - **Storage**: 5 GB active media storage
+   - **Features**: Core frame-accurate review, 7-day link retention, standard email notifications.
+
+2. **Studio Tier (Most Popular)**
+   - **Monthly Billing**: $12 per seat / month
+   - **Annual Billing**: $10 per seat / month (billed annually)
+   - **Storage**: 500 GB active media storage
+   - **Features**: Unlimited review links, version wipe comparison, custom branding, guest approvals, priority support.
+
+3. **Agency Tier**
+   - **Monthly Billing**: $25 per seat / month
+   - **Annual Billing**: $21 per seat / month (billed annually)
+   - **Storage**: 2 TB active media storage
+   - **Features**: Multi-team workspaces, custom domain routing, SSO / SAML integration, audit logs, dedicated account manager.
+
+4. **Enterprise Tier**
+   - **Cost**: Custom pricing
+   - **Features**: Unlimited storage, custom SLA, on-premises / private Cloud storage connectors, custom WebMCP integration, dedicated support engineer.
+
+---
+
+## 4. News & Updates
+
+### Welcome to Pasdiu
+Pasdiu is officially launched! Designed to solve the friction of post-production client reviews, Pasdiu provides a unified platform for media professionals to share drafts, gather precise timestamped notes, and lock in formal approvals.
+
+---
+
+## 5. Contact & Support
+
+For inquiries, custom enterprise quotes, or pipeline integration support:
+- **Web Form**: Visit `https://pasdiu.com/contact` (or `https://pasdiu.com/es/contact`)
+- **Backend API**: Contact submissions are sent to `https://us-central1-pasdiu-website.cloudfunctions.net/submitForm`
+- **Fields Required**:
+  - `name`: Full name of contact
+  - `email`: Work email address
+  - `company`: Studio or agency name (optional)
+  - `teamSize`: `solo` (Just me), `small` (2–15), `medium` (16–50), or `large` (50+)
+  - `message`: Text message / inquiry details
+  - `recaptchaToken`: Google reCAPTCHA v3 verification token
+
+---
+
+## 6. WebMCP Specifications for AI Agents
+
+Pasdiu exposes tools via **WebMCP** (Model Context Protocol for Web):
+
+### Client Tools Registered (`window.webMCP` / `navigator.modelContext`)
+
+1. `get_site_info()`
+   - Returns structured metadata about Pasdiu's product features, pricing tiers, and contact options.
+
+2. `calculate_pricing(tier, seats, billing)`
+   - Computes exact cost breakdowns based on parameters:
+     - `tier`: `"free"` | `"studio"` | `"agency"`
+     - `seats`: Number of team members (integer >= 1)
+     - `billing`: `"monthly"` | `"annual"`

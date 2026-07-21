@@ -1,0 +1,8 @@
+{
+  "name": "pasdiu-website-root",
+  "private": true,
+  "scripts": {
+    "deploy": "node scripts/deploy.mjs",
+    "lunch": "node scripts/deploy.mjs"
+  }
+}

@@ -1,0 +1,123 @@
+import { onRequest } from "firebase-functions/v2/https";
+import { defineSecret } from "firebase-functions/params";
+import { logger } from "firebase-functions/v2";
+import { ZodError } from "zod";
+import formConfigs from "./models.js";
+import { createTransporter, formatFrom } from "./helpers/mailer.js";
+import { verifyRecaptcha } from "./helpers/recaptcha.js";
+import { buildNotificationEmail } from "./templates/notificationEmail.js";
+import { buildConfirmationEmail } from "./templates/confirmationEmail.js";
+
+const GMAIL_USER = defineSecret("GMAIL_USER");
+const GMAIL_APP_PASSWORD = defineSecret("GMAIL_APP_PASSWORD");
+const GMAIL_SENDER = defineSecret("GMAIL_SENDER");
+const RECAPTCHA_SECRET_KEY = defineSecret("RECAPTCHA_SECRET_KEY");
+
+const ALLOWED_ORIGINS = [
+  "https://pasdiu.com",
+  "https://www.pasdiu.com",
+  "https://pasdiu-website.web.app",
+  "https://pasdiu-website.firebaseapp.com",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+];
+
+export const submitForm = onRequest(
+  {
+    region: "us-central1",
+    maxInstances: 10,
+    secrets: [GMAIL_USER, GMAIL_APP_PASSWORD, GMAIL_SENDER, RECAPTCHA_SECRET_KEY],
+  },
+  async (req, res) => {
+    const origin = req.headers.origin;
+
+    if (origin) {
+      if (ALLOWED_ORIGINS.includes(origin)) {
+        res.set("Access-Control-Allow-Origin", origin);
+        res.set("Vary", "Origin");
+      } else {
+        logger.warn("Unauthorized origin request rejected", { origin });
+        res.status(403).json({ success: false, error: "Unauthorized origin" });
+        return;
+      }
+    }
+
+    res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+
+    if (req.method === "OPTIONS") {
+      res.status(204).send("");
+      return;
+    }
+
+    if (req.method !== "POST") {
+      res.status(405).json({ success: false, error: "Method not allowed" });
+      return;
+    }
+
+    const { formType, data, recaptchaToken } = (req.body ?? {}) as {
+      formType?: string;
+      data?: Record<string, unknown>;
+      recaptchaToken?: string;
+    };
+
+    const config = formType ? formConfigs[formType] : undefined;
+    if (!formType || !config) {
+      res.status(400).json({
+        success: false,
+        error: `Unknown formType "${formType ?? ""}". Valid types: ${Object.keys(formConfigs).join(", ")}`,
+      });
+      return;
+    }
+
+    const recaptcha = await verifyRecaptcha(
+      recaptchaToken,
+      RECAPTCHA_SECRET_KEY.value(),
+    );
+    if (!recaptcha.success) {
+      logger.warn("reCAPTCHA verification failed", { formType, error: recaptcha.error });
+      res.status(403).json({ success: false, error: "reCAPTCHA verification failed" });
+      return;
+    }
+
+    let parsed: Record<string, unknown>;
+    try {
+      parsed = config.schema.parse(data ?? {});
+    } catch (err) {
+      if (err instanceof ZodError) {
+        res.status(400).json({ success: false, error: "Validation failed", details: err.flatten() });
+        return;
+      }
+      throw err;
+    }
+
+    const transporter = createTransporter(
+      GMAIL_USER.value(),
+      GMAIL_APP_PASSWORD.value(),
+    );
+    const from = formatFrom(GMAIL_SENDER.value());
+
+    const name = typeof parsed.name === "string" ? parsed.name : "Unknown";
+    const subject = `${config.subject} — ${name.replace(/[\r\n]/g, "")}`;
+
+    await transporter.sendMail({
+      from,
+      to: config.notifyEmail,
+      subject,
+      html: buildNotificationEmail(config, parsed),
+    });
+    logger.info("Notification email sent", { formType, to: config.notifyEmail });
+
+    if (typeof parsed.email === "string" && parsed.email) {
+      await transporter.sendMail({
+        from,
+        to: parsed.email,
+        subject: config.confirmationSubject,
+        html: buildConfirmationEmail(config, parsed),
+      });
+      logger.info("Confirmation email sent", { formType, to: parsed.email });
+    }
+
+    res.status(200).json({ success: true });
+  },
+);

@@ -1,0 +1,260 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+/* ════════════════════════════════════════════════════════════
+   PASDIU — Cinematic Dark theme tokens (mirrors the app's main.css)
+   Deep charcoal surfaces, stark white type, glowing accents used
+   ONLY for status/indicators and CTAs.
+   Typography: Boldonse for display/titles, B612 Mono for body text.
+   ════════════════════════════════════════════════════════════ */
+
+@theme {
+  --font-display: 'Boldonse', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'B612 Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-body: 'B612 Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+
+:root {
+  --bg: #121212;
+  --surface: #1e1e1e;
+  --surface-2: #262626;
+  --border: #333333;
+  --text: #f5f5f5;
+  --text-muted: #a3a3a3;
+  --accent-cyan: #22d3ee;    /* In-Progress / primary CTA glow */
+  --accent-emerald: #34d399; /* Approved */
+  --accent-amber: #fbbf24;   /* Revisions */
+  --status-backlog: #6b7280;
+  --status-done: #059669;
+
+  /* Nuxt UI surface overrides → charcoal, not pure black */
+  --ui-bg: var(--bg);
+  --ui-bg-muted: var(--surface);
+  --ui-bg-elevated: var(--surface-2);
+  --ui-border: var(--border);
+  --ui-text: var(--text);
+  --ui-text-muted: var(--text-muted);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  color-scheme: dark;
+}
+
+/* Titles use the Boldonse display face. Boldonse is a heavy all-caps display
+   font with a single weight — normalize weight, don't let the browser fake
+   bold, and let titles breathe. Opt in elsewhere with `.font-display`. */
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  font-synthesis: none;
+}
+h1, h2, h3 {
+  line-height: 1.15;
+}
+
+/* Clear, visible focus states for keyboard navigation (a11y / WCAG). */
+:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Page transitions (Nuxt pageTransition: 'page') ─────────── */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* ── Depth & dividers ───────────────────────────────────────── */
+.pd-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+}
+.pd-card-elevated {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+.pd-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+}
+.pd-glow-cyan {
+  box-shadow: 0 0 24px rgba(34, 211, 238, 0.25);
+}
+
+/* ── Entrance animations (scroll/mount) ─────────────────────── */
+@keyframes pd-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pd-enter {
+  animation: pd-fade-up 0.6s ease both;
+}
+.pd-enter-delay-1 { animation-delay: 0.1s; }
+.pd-enter-delay-2 { animation-delay: 0.2s; }
+.pd-enter-delay-3 { animation-delay: 0.3s; }
+
+/* Floating decorative elements (hero background layers) */
+@keyframes pd-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+.pd-float {
+  animation: pd-float 6s ease-in-out infinite;
+}
+
+/* ── Full-screen mobile menu ────────────────────────────────── */
+/* Circular clip-path reveal expanding from the hamburger button
+   (top-right corner), reversed on close. */
+.pd-menu {
+  clip-path: circle(150% at calc(100% - 2.25rem) 2rem);
+}
+.pd-menu-enter-active {
+  transition: clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pd-menu-leave-active {
+  transition: clip-path 0.4s cubic-bezier(0.55, 0, 0.55, 0.2), opacity 0.15s ease 0.3s;
+}
+.pd-menu-enter-from,
+.pd-menu-leave-to {
+  clip-path: circle(0% at calc(100% - 2.25rem) 2rem);
+}
+.pd-menu-leave-to {
+  opacity: 0;
+}
+
+/* Staggered entrance for menu items: set `--i` per item. */
+@keyframes pd-menu-item {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pd-menu-item {
+  animation: pd-menu-item 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.15s + var(--i, 0) * 0.06s);
+}
+
+/* ── Hero: "photoshoot behind a dark film" ambience ─────────── */
+/* Camera strobes: mostly dark, then a quick double-pop flash per cycle.
+   Stagger with --strobe-period / --strobe-delay per element. */
+@keyframes pd-strobe {
+  0%, 100% { opacity: 0; }
+  1.2%     { opacity: 0.55; }
+  2.6%     { opacity: 0.06; }
+  4%       { opacity: 0.35; }
+  7%       { opacity: 0; }
+}
+.pd-strobe {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(64px);
+  opacity: 0;
+  animation: pd-strobe var(--strobe-period, 9s) ease-out var(--strobe-delay, 0s) infinite;
+}
+
+/* Animated film grain (inline SVG turbulence, jumps position each frame). */
+@keyframes pd-grain-shift {
+  0%   { background-position: 0 0; }
+  25%  { background-position: -64px 32px; }
+  50%  { background-position: 48px -48px; }
+  75%  { background-position: -32px -72px; }
+  100% { background-position: 0 0; }
+}
+.pd-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: pd-grain-shift 0.7s steps(1) infinite;
+}
+
+/* ── Native scroll-driven reveals & parallax (no JS) ────────── */
+/* Progressive enhancement: browsers without animation-timeline
+   simply show content static — nothing is ever hidden. */
+@supports (animation-timeline: view()) {
+  .pd-reveal {
+    animation: pd-fade-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+  @keyframes pd-parallax {
+    to { transform: translateY(calc(var(--parallax, -40) * 1px)); }
+  }
+  .pd-parallax {
+    animation: pd-parallax linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 120vh;
+  }
+}
+
+/* ── Filmstrip marquee ──────────────────────────────────────── */
+.pd-filmstrip {
+  position: relative;
+  overflow: hidden;
+  background: #0b0b0b;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1.375rem 0;
+}
+/* Sprocket-hole rows, top and bottom, like a film negative. */
+.pd-filmstrip::before,
+.pd-filmstrip::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+  background-image: radial-gradient(circle at center, #2e2e2e 2.5px, transparent 3px);
+  background-size: 1.25rem 0.5rem;
+}
+.pd-filmstrip::before { top: 0.4rem; }
+.pd-filmstrip::after  { bottom: 0.4rem; }
+.pd-filmstrip-track {
+  display: flex;
+  width: max-content;
+  animation: pd-filmstrip-scroll 45s linear infinite;
+}
+/* Frames use margin (not gap) so the -50% loop point is seamless. */
+.pd-filmstrip-frame {
+  height: 8.5rem;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 0.375rem;
+  border: 1px solid #262626;
+  margin-right: 0.75rem;
+}
+@keyframes pd-filmstrip-scroll {
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pd-enter, .pd-float, .pd-menu-item,
+  .pd-strobe, .pd-grain, .pd-filmstrip-track,
+  .pd-reveal, .pd-parallax {
+    animation: none;
+  }
+  .page-enter-active, .page-leave-active,
+  .pd-menu-enter-active, .pd-menu-leave-active {
+    transition: none;
+  }
+}

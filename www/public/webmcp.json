@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "Pasdiu",
+  "version": "1.0.0",
+  "description": "WebMCP machine-readable tool definitions for Pasdiu marketing platform.",
+  "tools": [
+    {
+      "name": "get_site_info",
+      "description": "Get key information about Pasdiu marketing site, available features, pricing tiers, and contact options.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "calculate_pricing",
+      "description": "Calculate monthly or annual subscription cost for Pasdiu based on seat count and tier.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "tier": {
+            "type": "string",
+            "enum": ["free", "studio", "agency"],
+            "description": "Subscription tier name"
+          },
+          "seats": {
+            "type": "number",
+            "description": "Number of team members / seats"
+          },
+          "billing": {
+            "type": "string",
+            "enum": ["monthly", "annual"],
+            "description": "Billing cycle"
+          }
+        },
+        "required": ["tier", "seats", "billing"]
+      }
+    },
+    {
+      "name": "contact_pasdiu",
+      "description": "Send a message to the Pasdiu team with your name, work email, optional company, team size, and a message.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "description": "Full name" },
+          "email": { "type": "string", "description": "Work email" },
+          "company": { "type": "string", "description": "Company name" },
+          "teamSize": { "type": "string", "enum": ["solo", "small", "medium", "large"] },
+          "message": { "type": "string", "description": "Inquiry message" }
+        },
+        "required": ["name", "email", "message"]
+      }
+    }
+  ]
+}

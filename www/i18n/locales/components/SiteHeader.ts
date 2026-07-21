@@ -1,0 +1,26 @@
+export default {
+  en: {
+    mainNav: 'Main navigation',
+    features: 'Features',
+    pricing: 'Pricing',
+    news: 'News',
+    contact: 'Contact',
+    cta: 'Get started',
+    switchLanguage: 'Switch language',
+    toggleMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    menuLabel: 'Mobile navigation',
+  },
+  es: {
+    mainNav: 'Navegación principal',
+    features: 'Funciones',
+    pricing: 'Precios',
+    news: 'Noticias',
+    contact: 'Contacto',
+    cta: 'Comenzar',
+    switchLanguage: 'Cambiar idioma',
+    toggleMenu: 'Abrir menú',
+    closeMenu: 'Cerrar menú',
+    menuLabel: 'Navegación móvil',
+  },
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Pasdiu",
+  "name_for_model": "pasdiu_website",
+  "description_for_human": "Client-work logistics hub for media creators — agencies, post-production studios, and freelance editor collectives.",
+  "description_for_model": "Discover Pasdiu features, calculate seat-based pricing, and submit contact inquiries directly for media post-production workflows.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://pasdiu.com/.well-known/openapi.json"
+  },
+  "logo_url": "https://pasdiu.com/images/logo-white.svg",
+  "contact_email": "support@pasdiu.com",
+  "legal_info_url": "https://pasdiu.com/contact"
+}

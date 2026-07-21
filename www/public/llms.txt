@@ -1,0 +1,22 @@
+# Pasdiu — Client-Work Logistics Hub for Media Creators
+
+> Pasdiu is the client-work logistics hub for media creators — agencies, post-production studios, and freelance editor collectives managing client review and approval pipelines from brief to sign-off.
+
+## Overview & Main Pages
+
+- [Homepage](https://pasdiu.com/): Core value proposition, workflow overview, and quick-start links.
+- [Features](https://pasdiu.com/features): Frame-accurate video & audio review, automated client sign-offs, version comparisons, and real-time feedback threads.
+- [Pricing](https://pasdiu.com/pricing): Transparent seat-based subscription tiers (Free, Studio, Agency, Enterprise) and billing cycle options.
+- [News](https://pasdiu.com/news): Product updates, platform release notes, and creator workflows.
+- [Contact](https://pasdiu.com/contact): Send inquiries directly to the Pasdiu team for sales, enterprise custom plans, or support.
+
+## AI Agent & WebMCP Interoperability
+
+Pasdiu is built natively for AI browser agents and LLMs:
+- **Declarative WebMCP**: Interactive elements expose structured metadata via `toolname`, `tooldescription`, and `toolparamdescription` HTML attributes.
+- **Imperative WebMCP API**: The client plugin registers executable tools (`get_site_info`, `calculate_pricing`) under `window.webMCP` / `navigator.modelContext`.
+- **Form Submissions**: Form POSTs are handled by Cloud Functions at `https://us-central1-pasdiu-website.cloudfunctions.net/submitForm` backed by reCAPTCHA v3 score-based validation.
+
+## Complete Content Document
+
+- [llms-full.txt](https://pasdiu.com/llms-full.txt): Full-text Markdown aggregation of all pages, pricing matrices, feature documentation, and news articles for LLMs.
