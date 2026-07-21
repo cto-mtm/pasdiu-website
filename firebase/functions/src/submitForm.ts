@@ -98,31 +98,39 @@ export const submitForm = onRequest(
       const name = typeof parsed.name === "string" ? parsed.name : "Unknown";
       const subject = `${config.subject} — ${name.replace(/[\r\n]/g, "")}`;
 
-      await transporter.sendMail({
-        from,
-        to: config.notifyEmail,
-        subject,
-        html: buildNotificationEmail(config, parsed),
-      });
-      logger.info("Notification email sent", { formType, to: config.notifyEmail });
-
-      if (typeof parsed.email === "string" && parsed.email) {
+      try {
         await transporter.sendMail({
           from,
-          to: parsed.email,
-          subject: config.confirmationSubject,
-          html: buildConfirmationEmail(config, parsed),
+          to: config.notifyEmail,
+          subject,
+          html: buildNotificationEmail(config, parsed),
         });
-        logger.info("Confirmation email sent", { formType, to: parsed.email });
+        logger.info("Notification email sent", { formType, to: config.notifyEmail });
+
+        if (typeof parsed.email === "string" && parsed.email) {
+          await transporter.sendMail({
+            from,
+            to: parsed.email,
+            subject: config.confirmationSubject,
+            html: buildConfirmationEmail(config, parsed),
+          });
+          logger.info("Confirmation email sent", { formType, to: parsed.email });
+        }
+      } catch (mailErr) {
+        const mailErrMsg = mailErr instanceof Error ? mailErr.message : String(mailErr);
+        logger.error("Failed to send email notification", { error: mailErrMsg, stack: mailErr instanceof Error ? mailErr.stack : undefined });
+        res.status(500).json({ success: false, error: "Failed to send email notification.", details: mailErrMsg });
+        return;
       }
 
       res.status(200).json({ success: true });
     } catch (err) {
+      const errMsg = err instanceof Error ? err.message : String(err);
       logger.error("Unhandled error processing submitForm request", {
-        error: err instanceof Error ? err.message : String(err),
+        error: errMsg,
         stack: err instanceof Error ? err.stack : undefined,
       });
-      res.status(500).json({ success: false, error: "Internal server error" });
+      res.status(500).json({ success: false, error: "Internal server error", details: errMsg });
     }
   },
 );
