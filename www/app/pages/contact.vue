@@ -27,7 +27,14 @@ async function onSubmit() {
   status.value = 'sending'
   errorMessage.value = ''
 
-  const recaptchaToken = await getRecaptchaToken('contact_form')
+  let recaptchaToken: string | undefined
+  try {
+    recaptchaToken = await getRecaptchaToken('contact_form')
+  } catch (err) {
+    status.value = 'error'
+    errorMessage.value = err instanceof Error ? err.message : 'reCAPTCHA verification failed to load.'
+    return
+  }
 
   const result = await submit(
     'contact',

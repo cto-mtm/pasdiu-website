@@ -13,7 +13,8 @@ const previewDir = join(__dirname, "..", "preview");
 
 const { buildNotificationEmail } = await import("../lib/templates/notificationEmail.js");
 const { buildConfirmationEmail } = await import("../lib/templates/confirmationEmail.js");
-const { default: formConfigs } = await import("../lib/models.js");
+const modelsModule = await import("../lib/models.js");
+const formConfigs = modelsModule.default?.default || modelsModule.default;
 
 const config = formConfigs["contact"];
 const sampleData = {

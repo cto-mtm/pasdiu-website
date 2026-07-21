@@ -1,30 +1,9 @@
-import type { FormConfig } from "../models.js";
-import { escapeHtml } from "../helpers/escapeHtml.js";
-
-/** Internal notification email: a centered card listing every submitted field matching the website dark theme. */
-export function buildNotificationEmail(
-  config: FormConfig,
-  data: Record<string, unknown>,
-): string {
-  const rows = [...config.requiredFields, ...config.optionalFields]
-    .filter((field) => data[field] !== undefined && data[field] !== "")
-    .map(
-      (field, index, arr) => `
-        <tr>
-          <td style="padding:12px 16px;border-bottom:${index === arr.length - 1 ? "none" : "1px solid #262626"};font-weight:600;color:#22d3ee;font-size:12px;text-transform:uppercase;letter-spacing:1px;vertical-align:top;width:140px;font-family:'B612 Mono',ui-monospace,SFMono-Regular,Consolas,monospace;">${escapeHtml(field)}</td>
-          <td style="padding:12px 16px;border-bottom:${index === arr.length - 1 ? "none" : "1px solid #262626"};color:#f5f5f5;font-size:14px;line-height:1.6;white-space:pre-wrap;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">${escapeHtml(data[field])}</td>
-        </tr>`,
-    )
-    .join("");
-
-  const year = new Date().getFullYear();
-
-  return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${escapeHtml(config.subject)}</title>
+    <title>New Pasdiu Contact Form Submission</title>
   </head>
   <body style="margin:0;padding:32px 16px;background-color:#121212;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -53,9 +32,30 @@ export function buildNotificationEmail(
             <!-- Body -->
             <tr>
               <td style="padding:32px;">
-                <h1 style="margin:0 0 20px 0;font-size:18px;font-weight:600;color:#ffffff;line-height:1.4;">${escapeHtml(config.subject)}</h1>
+                <h1 style="margin:0 0 20px 0;font-size:18px;font-weight:600;color:#ffffff;line-height:1.4;">New Pasdiu Contact Form Submission</h1>
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#161616;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;">
-                  ${rows}
+                  
+        <tr>
+          <td style="padding:12px 16px;border-bottom:1px solid #262626;font-weight:600;color:#22d3ee;font-size:12px;text-transform:uppercase;letter-spacing:1px;vertical-align:top;width:140px;font-family:'B612 Mono',ui-monospace,SFMono-Regular,Consolas,monospace;">name</td>
+          <td style="padding:12px 16px;border-bottom:1px solid #262626;color:#f5f5f5;font-size:14px;line-height:1.6;white-space:pre-wrap;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">Ada Lovelace</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 16px;border-bottom:1px solid #262626;font-weight:600;color:#22d3ee;font-size:12px;text-transform:uppercase;letter-spacing:1px;vertical-align:top;width:140px;font-family:'B612 Mono',ui-monospace,SFMono-Regular,Consolas,monospace;">email</td>
+          <td style="padding:12px 16px;border-bottom:1px solid #262626;color:#f5f5f5;font-size:14px;line-height:1.6;white-space:pre-wrap;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">ada@example.com</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 16px;border-bottom:1px solid #262626;font-weight:600;color:#22d3ee;font-size:12px;text-transform:uppercase;letter-spacing:1px;vertical-align:top;width:140px;font-family:'B612 Mono',ui-monospace,SFMono-Regular,Consolas,monospace;">message</td>
+          <td style="padding:12px 16px;border-bottom:1px solid #262626;color:#f5f5f5;font-size:14px;line-height:1.6;white-space:pre-wrap;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">We manage ~20 clients and are drowning in review links.
+Does Pasdiu handle versioned approvals?</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 16px;border-bottom:1px solid #262626;font-weight:600;color:#22d3ee;font-size:12px;text-transform:uppercase;letter-spacing:1px;vertical-align:top;width:140px;font-family:'B612 Mono',ui-monospace,SFMono-Regular,Consolas,monospace;">company</td>
+          <td style="padding:12px 16px;border-bottom:1px solid #262626;color:#f5f5f5;font-size:14px;line-height:1.6;white-space:pre-wrap;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">Analytical Post</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 16px;border-bottom:none;font-weight:600;color:#22d3ee;font-size:12px;text-transform:uppercase;letter-spacing:1px;vertical-align:top;width:140px;font-family:'B612 Mono',ui-monospace,SFMono-Regular,Consolas,monospace;">teamSize</td>
+          <td style="padding:12px 16px;border-bottom:none;color:#f5f5f5;font-size:14px;line-height:1.6;white-space:pre-wrap;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">3-15</td>
+        </tr>
                 </table>
               </td>
             </tr>
@@ -74,7 +74,7 @@ export function buildNotificationEmail(
                   </tr>
                   <tr>
                     <td colspan="2" style="padding-top:8px;font-size:11px;color:#737373;">
-                      © ${year} Pasdiu. All rights reserved.
+                      © 2026 Pasdiu. All rights reserved.
                     </td>
                   </tr>
                 </table>
@@ -85,5 +85,4 @@ export function buildNotificationEmail(
       </tr>
     </table>
   </body>
-</html>`;
-}
+</html>

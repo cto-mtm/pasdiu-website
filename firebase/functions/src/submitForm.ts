@@ -30,74 +30,99 @@ export const submitForm = onRequest(
     secrets: [GMAIL_USER, GMAIL_APP_PASSWORD, GMAIL_SENDER, RECAPTCHA_SECRET_KEY],
   },
   async (req, res) => {
-    if (req.method !== "POST") {
-      res.status(405).json({ success: false, error: "Method not allowed" });
-      return;
-    }
-
-    const { formType, data, recaptchaToken } = (req.body ?? {}) as {
-      formType?: string;
-      data?: Record<string, unknown>;
-      recaptchaToken?: string;
-    };
-
-    const config = formType ? formConfigs[formType] : undefined;
-    if (!formType || !config) {
-      res.status(400).json({
-        success: false,
-        error: `Unknown formType "${formType ?? ""}". Valid types: ${Object.keys(formConfigs).join(", ")}`,
-      });
-      return;
-    }
-
-    const recaptcha = await verifyRecaptcha(
-      recaptchaToken,
-      RECAPTCHA_SECRET_KEY.value(),
-    );
-    if (!recaptcha.success) {
-      logger.warn("reCAPTCHA verification failed", { formType, error: recaptcha.error });
-      res.status(403).json({ success: false, error: "reCAPTCHA verification failed" });
-      return;
-    }
-
-    let parsed: Record<string, unknown>;
     try {
-      parsed = config.schema.parse(data ?? {});
-    } catch (err) {
-      if (err instanceof ZodError) {
-        res.status(400).json({ success: false, error: "Validation failed", details: err.flatten() });
+      if (req.method !== "POST") {
+        res.status(405).json({ success: false, error: "Method not allowed" });
         return;
       }
-      throw err;
-    }
 
-    const transporter = createTransporter(
-      GMAIL_USER.value(),
-      GMAIL_APP_PASSWORD.value(),
-    );
-    const from = formatFrom(GMAIL_SENDER.value());
+      const { formType, data, recaptchaToken } = (req.body ?? {}) as {
+        formType?: string;
+        data?: Record<string, unknown>;
+        recaptchaToken?: string;
+      };
 
-    const name = typeof parsed.name === "string" ? parsed.name : "Unknown";
-    const subject = `${config.subject} — ${name.replace(/[\r\n]/g, "")}`;
+      const config = formType ? formConfigs[formType] : undefined;
+      if (!formType || !config) {
+        res.status(400).json({
+          success: false,
+          error: `Unknown formType "${formType ?? ""}". Valid types: ${Object.keys(formConfigs).join(", ")}`,
+        });
+        return;
+      }
 
-    await transporter.sendMail({
-      from,
-      to: config.notifyEmail,
-      subject,
-      html: buildNotificationEmail(config, parsed),
-    });
-    logger.info("Notification email sent", { formType, to: config.notifyEmail });
+      let recaptchaSecret = "";
+      try {
+        recaptchaSecret = RECAPTCHA_SECRET_KEY.value();
+      } catch (err) {
+        logger.warn("RECAPTCHA_SECRET_KEY secret not available", { error: String(err) });
+      }
 
-    if (typeof parsed.email === "string" && parsed.email) {
+      const recaptcha = await verifyRecaptcha(
+        recaptchaToken,
+        recaptchaSecret,
+      );
+      if (!recaptcha.success) {
+        logger.warn("reCAPTCHA verification failed", { formType, error: recaptcha.error });
+        res.status(403).json({ success: false, error: "reCAPTCHA verification failed" });
+        return;
+      }
+
+      let parsed: Record<string, unknown>;
+      try {
+        parsed = config.schema.parse(data ?? {});
+      } catch (err) {
+        if (err instanceof ZodError) {
+          res.status(400).json({ success: false, error: "Validation failed", details: err.flatten() });
+          return;
+        }
+        throw err;
+      }
+
+      let gmailUser = "";
+      let gmailPassword = "";
+      let gmailSender = "";
+      try {
+        gmailUser = GMAIL_USER.value();
+        gmailPassword = GMAIL_APP_PASSWORD.value();
+        gmailSender = GMAIL_SENDER.value();
+      } catch (err) {
+        logger.error("Failed to retrieve Gmail secrets from Secret Manager", { error: String(err) });
+        res.status(500).json({ success: false, error: "Email service credentials missing or inaccessible." });
+        return;
+      }
+
+      const transporter = createTransporter(gmailUser, gmailPassword);
+      const from = formatFrom(gmailSender);
+
+      const name = typeof parsed.name === "string" ? parsed.name : "Unknown";
+      const subject = `${config.subject} — ${name.replace(/[\r\n]/g, "")}`;
+
       await transporter.sendMail({
         from,
-        to: parsed.email,
-        subject: config.confirmationSubject,
-        html: buildConfirmationEmail(config, parsed),
+        to: config.notifyEmail,
+        subject,
+        html: buildNotificationEmail(config, parsed),
       });
-      logger.info("Confirmation email sent", { formType, to: parsed.email });
-    }
+      logger.info("Notification email sent", { formType, to: config.notifyEmail });
 
-    res.status(200).json({ success: true });
+      if (typeof parsed.email === "string" && parsed.email) {
+        await transporter.sendMail({
+          from,
+          to: parsed.email,
+          subject: config.confirmationSubject,
+          html: buildConfirmationEmail(config, parsed),
+        });
+        logger.info("Confirmation email sent", { formType, to: parsed.email });
+      }
+
+      res.status(200).json({ success: true });
+    } catch (err) {
+      logger.error("Unhandled error processing submitForm request", {
+        error: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+      });
+      res.status(500).json({ success: false, error: "Internal server error" });
+    }
   },
 );
