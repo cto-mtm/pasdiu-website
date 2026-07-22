@@ -20,7 +20,7 @@ const formConfigs: Record<string, FormConfig> = {
     }),
     requiredFields: ["name", "email", "message"],
     optionalFields: ["company", "teamSize"],
-    notifyEmail: "jose@curaos.com",
+    notifyEmail: "mercedes@mtmcya.com",
     subject: "New Pasdiu Contact Form Submission",
     confirmationSubject: "We received your message — Pasdiu",
   },

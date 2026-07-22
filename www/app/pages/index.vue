@@ -85,11 +85,11 @@ const roles = [
       </div>
     </section>
 
-    <!-- Product screenshot: replace /images/screenshots/dashboard.svg with a real capture -->
+    <!-- Product screenshot -->
     <section class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 -mt-16 sm:-mt-24 pb-16">
       <ScreenshotFrame
         class="pd-enter pd-enter-delay-3"
-        src="/images/screenshots/dashboard.svg"
+        src="/images/screenshots/clients-list.webp"
         :alt="t('Index.hero.screenshotAlt')"
         :caption="t('Index.hero.screenshotCaption')"
       />

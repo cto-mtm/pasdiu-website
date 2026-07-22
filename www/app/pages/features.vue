@@ -20,12 +20,11 @@ const items = [
   { key: 'native', icon: 'i-lucide-smartphone' },
 ]
 
-// Product tour screenshots. Swap the placeholder SVGs in
-// /public/images/screenshots/ for real captures — same filenames, no code changes.
+// Product tour screenshots using optimized actual captures.
 const tour = [
-  { key: 'boards', src: '/images/screenshots/boards.svg', glow: 'cyan' },
-  { key: 'iteration', src: '/images/screenshots/iteration.svg', glow: 'amber' },
-  { key: 'portal', src: '/images/screenshots/portal.svg', glow: 'emerald' },
+  { key: 'boards', src: '/images/screenshots/tasks-list.webp', glow: 'cyan' },
+  { key: 'iteration', src: '/images/screenshots/task-details.webp', glow: 'amber' },
+  { key: 'portal', src: '/images/screenshots/client-view.webp', glow: 'emerald' },
 ] as const
 </script>
 
