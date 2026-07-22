@@ -16,9 +16,24 @@ const highlights = [
 ]
 
 const roles = [
-  { key: 'managers', icon: 'i-lucide-layout-dashboard', accent: 'var(--accent-cyan)' },
-  { key: 'editors', icon: 'i-lucide-clapperboard', accent: 'var(--accent-amber)' },
-  { key: 'clients', icon: 'i-lucide-check-circle-2', accent: 'var(--accent-emerald)' },
+  {
+    key: 'managers',
+    icon: 'i-lucide-layout-dashboard',
+    accent: 'var(--accent-cyan)',
+    avatar: '/images/avatars/producer.webp',
+  },
+  {
+    key: 'editors',
+    icon: 'i-lucide-clapperboard',
+    accent: 'var(--accent-amber)',
+    avatar: '/images/avatars/editor.webp',
+  },
+  {
+    key: 'clients',
+    icon: 'i-lucide-check-circle-2',
+    accent: 'var(--accent-emerald)',
+    avatar: '/images/avatars/client.webp',
+  },
 ]
 </script>
 
@@ -62,9 +77,17 @@ const roles = [
       </div>
 
       <div class="max-w-6xl mx-auto px-4 sm:px-6 py-24">
-        <p class="pd-enter text-xs uppercase tracking-[0.25em] text-[var(--accent-cyan)] mb-6">
-          {{ t('Index.hero.kicker') }}
-        </p>
+        <!-- Single integrated human creator eyebrow -->
+        <div class="pd-enter flex items-center gap-3 mb-6">
+          <div class="flex -space-x-2 overflow-hidden">
+            <img src="/images/avatars/producer.webp" alt="Producer" class="inline-block size-7 rounded-full ring-2 ring-[var(--surface-2)] object-cover" />
+            <img src="/images/avatars/editor.webp" alt="Editor" class="inline-block size-7 rounded-full ring-2 ring-[var(--surface-2)] object-cover" />
+            <img src="/images/avatars/client.webp" alt="Client" class="inline-block size-7 rounded-full ring-2 ring-[var(--surface-2)] object-cover" />
+          </div>
+          <span class="text-xs uppercase tracking-[0.2em] font-semibold text-[var(--accent-cyan)]">
+            {{ t('Index.hero.kicker') }}
+          </span>
+        </div>
         <h1 class="pd-enter pd-enter-delay-1 text-4xl sm:text-6xl max-w-3xl mb-6">
           {{ t('Index.hero.title') }}
         </h1>
@@ -113,14 +136,32 @@ const roles = [
 
     <div class="pd-divider max-w-6xl mx-auto" />
 
-    <!-- Roles -->
+    <!-- Roles: Humanized creator seats -->
     <section class="pd-reveal max-w-6xl mx-auto px-4 sm:px-6 py-24">
-      <h2 class="text-2xl sm:text-4xl mb-12">{{ t('Index.roles.title') }}</h2>
+      <div class="mb-12">
+        <h2 class="text-2xl sm:text-4xl mb-3">{{ t('Index.roles.title') }}</h2>
+        <p class="text-[var(--text-muted)] max-w-2xl text-base">{{ t('Index.roles.subtitle') }}</p>
+      </div>
       <div class="grid gap-6 md:grid-cols-3">
-        <article v-for="role in roles" :key="role.key" class="pd-card-elevated p-6">
-          <UIcon :name="role.icon" class="size-8 mb-4" :style="{ color: role.accent }" />
-          <h3 class="text-lg mb-2">{{ t(`Index.roles.${role.key}.title`) }}</h3>
-          <p class="text-sm text-[var(--text-muted)]">{{ t(`Index.roles.${role.key}.body`) }}</p>
+        <article v-for="role in roles" :key="role.key" class="pd-card-elevated p-6 flex flex-col justify-between group">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <div class="relative">
+                <img :src="role.avatar" :alt="t(`Index.roles.${role.key}.title`)" class="size-14 rounded-full object-cover ring-2 ring-[var(--border)] transition-transform duration-300 group-hover:scale-105" />
+                <div class="absolute -bottom-1 -right-1 size-6 rounded-full bg-[var(--surface)] flex items-center justify-center border border-[var(--border)]">
+                  <UIcon :name="role.icon" class="size-3.5" :style="{ color: role.accent }" />
+                </div>
+              </div>
+              <span class="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded-full border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text-muted)]">
+                {{ t(`Index.roles.${role.key}.badge`) }}
+              </span>
+            </div>
+            <p class="text-xs uppercase tracking-wider font-semibold mb-1" :style="{ color: role.accent }">
+              {{ t(`Index.roles.${role.key}.subtitle`) }}
+            </p>
+            <h3 class="text-xl font-semibold mb-3">{{ t(`Index.roles.${role.key}.title`) }}</h3>
+            <p class="text-sm text-[var(--text-muted)] leading-relaxed">{{ t(`Index.roles.${role.key}.body`) }}</p>
+          </div>
         </article>
       </div>
     </section>

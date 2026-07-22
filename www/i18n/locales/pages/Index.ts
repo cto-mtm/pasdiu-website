@@ -8,6 +8,7 @@ export default {
       kicker: 'Client-work logistics for media creators',
       title: 'From brief to approval. Without the chaos.',
       subtitle: 'Pasdiu is where agencies, post-production studios, and editor collectives run client work: nested projects, versioned review, and a portal where clients approve — for free.',
+      trustedBy: 'Built for post-production studios, editor collectives & agency directors',
       ctaPrimary: 'Start free',
       ctaSecondary: 'See pricing',
       note: 'Free plan · 2 seats · 3 clients · unlimited client reviewers',
@@ -23,9 +24,25 @@ export default {
     },
     roles: {
       title: 'Built for every seat at the table',
-      managers: { title: 'Managers', body: 'Clients, boards, ledger, analytics, and team — your whole operation in one dashboard.' },
-      editors: { title: 'Editors', body: 'A Focus Slate of assigned tasks. Push versions, clear notes, move on.' },
-      clients: { title: 'Clients', body: 'Review and approve in the Portal. No training, no seat fee, no excuses.' },
+      subtitle: 'Empowering the key people behind every video & media production pipeline.',
+      managers: {
+        title: 'Post Supervisors & Producers',
+        subtitle: 'Full Operational Control',
+        badge: '14 Active Pipelines',
+        body: 'Clients, boards, ledger, analytics, and team — your whole post-production workflow in one central command center.',
+      },
+      editors: {
+        title: 'Editors & Colorists',
+        subtitle: 'Distraction-Free Focus',
+        badge: 'Focus Slate · V3 Live',
+        body: 'A dedicated Focus Slate of assigned tasks. Push new cuts, clear feedback notes, and keep the timeline moving forward.',
+      },
+      clients: {
+        title: 'Clients & Stakeholders',
+        subtitle: 'Frictionless Approval',
+        badge: '1-Click Portal Approval',
+        body: 'Review video cuts and approve in a clean, high-speed portal. Zero training, zero seat fees, and zero software barrier.',
+      },
     },
     ctaBand: {
       title: 'Bring every client in. They ride free.',
@@ -42,6 +59,7 @@ export default {
       kicker: 'Logística de trabajo con clientes para creadores de medios',
       title: 'Del brief a la aprobación. Sin el caos.',
       subtitle: 'Pasdiu es donde agencias, estudios de postproducción y colectivos de editores gestionan el trabajo con clientes: proyectos anidados, revisión versionada y un portal donde los clientes aprueban — gratis.',
+      trustedBy: 'Diseñado para estudios de postproducción, editores y directores de agencia',
       ctaPrimary: 'Empieza gratis',
       ctaSecondary: 'Ver precios',
       note: 'Plan gratis · 2 puestos · 3 clientes · revisores ilimitados',
@@ -57,9 +75,25 @@ export default {
     },
     roles: {
       title: 'Hecho para cada rol de tu equipo',
-      managers: { title: 'Managers', body: 'Clientes, tableros, ledger, analítica y equipo — toda tu operación en un dashboard.' },
-      editors: { title: 'Editores', body: 'Un Focus Slate con tus tareas asignadas. Sube versiones, resuelve notas, sigue.' },
-      clients: { title: 'Clientes', body: 'Revisan y aprueban en el Portal. Sin formación, sin costo por puesto, sin excusas.' },
+      subtitle: 'Potenciando a las personas clave detrás de cada pipeline de medios y video.',
+      managers: {
+        title: 'Supervisores de Post y Productores',
+        subtitle: 'Control Operativo Total',
+        badge: '14 Pipelines Activos',
+        body: 'Clientes, tableros, ledger, analítica y equipo — todo tu flujo de postproducción en un centro de mando único.',
+      },
+      editors: {
+        title: 'Editores y Coloristas',
+        subtitle: 'Enfoque Sin Distracciones',
+        badge: 'Focus Slate · V3 En Vivo',
+        body: 'Un Focus Slate dedicado con tus tareas asignadas. Sube nuevos cortes, resuelve notas de feedback y mantén la línea de tiempo avanzando.',
+      },
+      clients: {
+        title: 'Clientes y Directores',
+        subtitle: 'Aprobación Sin Fricción',
+        badge: 'Aprobación 1-Clic en Portal',
+        body: 'Revisan cortes de video y aprueban en un portal limpio y ultrarrápido. Sin formación, sin costo por puesto y sin excusas.',
+      },
     },
     ctaBand: {
       title: 'Invita a todos tus clientes. Van gratis.',
