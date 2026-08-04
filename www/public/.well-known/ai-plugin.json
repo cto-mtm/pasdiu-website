@@ -3,7 +3,7 @@
   "name_for_human": "Pasdiu",
   "name_for_model": "pasdiu_website",
   "description_for_human": "Client-work logistics hub for media creators — agencies, post-production studios, and freelance editor collectives.",
-  "description_for_model": "Discover Pasdiu features, calculate seat-based pricing, and submit contact inquiries directly for media post-production workflows.",
+  "description_for_model": "Discover Pasdiu features, look up flat per-workspace pricing (no per-seat billing), and submit contact inquiries directly for media post-production workflows.",
   "auth": {
     "type": "none"
   },

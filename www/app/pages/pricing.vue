@@ -10,10 +10,15 @@ useSeoMeta({
 
 const annual = ref(false)
 
+type PaidKey = 'free' | 'studio' | 'agency'
+
+// Flat price per workspace — no per-seat charge on any tier.
+// Annual is 10x the monthly price ("2 months free"); `annualMonthly` is that
+// yearly total spread across 12 months, which is what the card shows.
 const prices = {
-  free: { monthly: 0, annual: 0 },
-  studio: { monthly: 12, annual: 10 },
-  agency: { monthly: 25, annual: 21 },
+  free: { monthly: 0, annualMonthly: 0, annualTotal: 0 },
+  studio: { monthly: 49, annualMonthly: 41, annualTotal: 490 },
+  agency: { monthly: 149, annualMonthly: 124, annualTotal: 1490 },
 } as const
 
 const tiers = [
@@ -23,8 +28,12 @@ const tiers = [
   { key: 'enterprise', highlighted: false, hasPrice: false },
 ] as const
 
-function price(key: 'free' | 'studio' | 'agency') {
-  return annual.value ? prices[key].annual : prices[key].monthly
+function price(key: PaidKey) {
+  return annual.value ? prices[key].annualMonthly : prices[key].monthly
+}
+
+function annualTotal(key: PaidKey) {
+  return prices[key].annualTotal.toLocaleString('en-US')
 }
 
 function features(key: string): string[] {
@@ -104,11 +113,17 @@ const notes = [
 
           <p class="mb-1">
             <template v-if="tier.hasPrice">
-              <span class="text-4xl font-display">${{ price(tier.key as 'free' | 'studio' | 'agency') }}</span>
-              <span class="text-xs text-[var(--text-muted)] ml-2">{{ t('Pricing.perSeatMonth') }}</span>
+              <span class="text-4xl font-display">${{ price(tier.key as PaidKey) }}</span>
+              <span class="text-xs text-[var(--text-muted)] ml-2">{{ t('Pricing.perWorkspaceMonth') }}</span>
             </template>
             <template v-else>
               <span class="text-4xl font-display">{{ t('Pricing.custom') }}</span>
+            </template>
+          </p>
+
+          <p class="text-xs text-[var(--text-muted)] mb-5 min-h-4">
+            <template v-if="annual && tier.hasPrice && price(tier.key as PaidKey) > 0">
+              {{ t('Pricing.billedAnnually', { total: annualTotal(tier.key as PaidKey) }) }}
             </template>
           </p>
 

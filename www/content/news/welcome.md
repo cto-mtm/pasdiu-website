@@ -18,6 +18,6 @@ Media work has a shape: a client sends a brief, the work splits into projects an
 
 ## Start free
 
-The free plan is a complete product for a freelancer: 2 seats, 3 clients, 500 active tasks, and unlimited client reviewers. When you hire your third teammate or land your fourth client, Studio is $12 per seat per month.
+The free plan is a complete product for a freelancer: 3 seats, 3 clients, 500 active tasks, and unlimited client reviewers. When you hire your fourth teammate or land your fourth client, Studio is $49 per month — flat, for the whole workspace, no matter how many people you invite.
 
 We'd love to hear what you're cutting, mixing, or shipping — [say hello](/contact).

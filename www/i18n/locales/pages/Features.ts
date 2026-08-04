@@ -42,7 +42,7 @@ export default {
     },
     cta: {
       title: 'See it with your own pipeline.',
-      body: 'Start on the free plan — 2 seats, 3 clients, unlimited client reviewers.',
+      body: 'Start on the free plan — 3 seats, 3 clients, unlimited client reviewers.',
       button: 'Start free',
     },
   },
@@ -89,7 +89,7 @@ export default {
     },
     cta: {
       title: 'Míralo con tu propio pipeline.',
-      body: 'Empieza con el plan gratis — 2 puestos, 3 clientes, revisores ilimitados.',
+      body: 'Empieza con el plan gratis — 3 puestos, 3 clientes, revisores ilimitados.',
       button: 'Empieza gratis',
     },
   },

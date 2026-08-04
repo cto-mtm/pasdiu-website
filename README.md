@@ -35,6 +35,10 @@ Run `npm run optimize:images` in `www/` to batch convert `public/images/` conten
 2. `cd firebase/functions && npm run deploy`.
 3. Call it from the site: `useSubmitForm('your-type', { ... })`.
 
+## Changing pricing
+
+Pricing is marketing copy spread across the pages, the i18n locale files, the news posts, and the agent-facing files in `www/public/` (some of which are duplicated under `.well-known/`). `docs/architecture.md` lists every file that has to move together.
+
 ## Adding a legacy redirect
 
 1. Add the rule to `routeRules` in `www/nuxt.config.ts` (patterns are documented inline).

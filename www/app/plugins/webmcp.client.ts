@@ -77,11 +77,12 @@ export default defineNuxtPlugin((nuxtApp) => {
     execute: () => ({
       name: 'Pasdiu',
       tagline: 'Client-work logistics hub for media creators',
+      pricingModel: 'Flat price per workspace — no per-seat charge. Client reviewer users are free and unlimited on every tier.',
       tiers: [
-        { name: 'Free', priceMonthly: 0, priceAnnual: 0, seats: 'Up to 2' },
-        { name: 'Studio', priceMonthly: 12, priceAnnual: 10, seats: 'Per seat/mo' },
-        { name: 'Agency', priceMonthly: 25, priceAnnual: 21, seats: 'Per seat/mo' },
-        { name: 'Enterprise', price: 'Custom', seats: 'Unlimited' },
+        { name: 'Free', priceMonthly: 0, priceAnnual: 0, seatAllowance: 3 },
+        { name: 'Studio', priceMonthly: 49, priceAnnual: 490, seatAllowance: 20 },
+        { name: 'Agency', priceMonthly: 149, priceAnnual: 1490, seatAllowance: 'Unlimited' },
+        { name: 'Enterprise', price: 'Custom', seatAllowance: 'Unlimited' },
       ],
       features: [
         'Frame-accurate video & audio review',
@@ -95,7 +96,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   // 2. Pricing Calculator Tool
   registerTool({
     name: 'calculate_pricing',
-    description: 'Calculate monthly or annual subscription cost for Pasdiu based on seat count and tier.',
+    description: 'Get the flat subscription cost for a Pasdiu tier. Pricing is per workspace, not per seat — team size never changes the price, it only determines which tier a team fits in.',
     parameters: {
       tier: {
         type: 'string',
@@ -103,10 +104,10 @@ export default defineNuxtPlugin((nuxtApp) => {
         required: true,
         enum: ['free', 'studio', 'agency'],
       },
-      seats: {
+      teamSize: {
         type: 'number',
-        description: 'Number of team members / seats',
-        required: true,
+        description: 'Number of team members (admins, PMs, contractors). Does not affect price — used only to check the tier\'s seat allowance. Client reviewer users never count.',
+        required: false,
       },
       billing: {
         type: 'string',
@@ -115,25 +116,29 @@ export default defineNuxtPlugin((nuxtApp) => {
         enum: ['monthly', 'annual'],
       },
     },
-    execute: ({ tier, seats, billing }) => {
-      const seatCount = Math.max(1, Number(seats) || 1)
-      const prices = {
-        free: { monthly: 0, annual: 0 },
-        studio: { monthly: 12, annual: 10 },
-        agency: { monthly: 25, annual: 21 },
+    execute: ({ tier, teamSize, billing }) => {
+      // Flat per-workspace pricing: annual is 10x monthly ("2 months free").
+      const plans = {
+        free: { monthly: 0, annual: 0, seatAllowance: 3 },
+        studio: { monthly: 49, annual: 490, seatAllowance: 20 },
+        agency: { monthly: 149, annual: 1490, seatAllowance: Infinity },
       }
-      const selectedTier = (tier as keyof typeof prices) in prices ? (tier as keyof typeof prices) : 'studio'
-      const rate = billing === 'annual' ? prices[selectedTier].annual : prices[selectedTier].monthly
-      const monthlyTotal = rate * seatCount
-      const annualTotal = monthlyTotal * 12
+      const selectedTier = (tier as keyof typeof plans) in plans ? (tier as keyof typeof plans) : 'studio'
+      const plan = plans[selectedTier]
+      const isAnnual = billing === 'annual'
+      const seats = Number(teamSize) || 0
+      const fitsSeatAllowance = seats > 0 ? seats <= plan.seatAllowance : undefined
 
       return {
         tier: selectedTier,
-        seats: seatCount,
-        billing: billing === 'annual' ? 'annual' : 'monthly',
-        perSeatRate: rate,
-        monthlyTotal,
-        annualTotal: billing === 'annual' ? annualTotal : undefined,
+        billing: isAnnual ? 'annual' : 'monthly',
+        pricingModel: 'flat per workspace',
+        total: isAnnual ? plan.annual : plan.monthly,
+        monthlyEquivalent: isAnnual ? Math.round(plan.annual / 12) : plan.monthly,
+        seatAllowance: plan.seatAllowance === Infinity ? 'unlimited' : plan.seatAllowance,
+        teamSize: seats > 0 ? seats : undefined,
+        fitsSeatAllowance,
+        clientReviewers: 'free and unlimited — never count against the seat allowance',
         currency: 'USD',
       }
     },

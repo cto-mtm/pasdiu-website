@@ -6,7 +6,7 @@
 
 - [Homepage](https://pasdiu.com/): Core value proposition, workflow overview, and quick-start links.
 - [Features](https://pasdiu.com/features): Frame-accurate video & audio review, automated client sign-offs, version comparisons, and real-time feedback threads.
-- [Pricing](https://pasdiu.com/pricing): Transparent seat-based subscription tiers (Free, Studio, Agency, Enterprise) and billing cycle options.
+- [Pricing](https://pasdiu.com/pricing): Transparent flat per-workspace subscription tiers (Free, Studio, Agency, Enterprise) with no per-seat billing, plus billing cycle options.
 - [News](https://pasdiu.com/news): Product updates, platform release notes, and creator workflows.
 - [Contact](https://pasdiu.com/contact): Send inquiries directly to the Pasdiu team for sales, enterprise custom plans, or support.
 

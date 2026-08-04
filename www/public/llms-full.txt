@@ -37,31 +37,35 @@ Pasdiu is the client-work logistics hub for media creators. It is built specific
 
 ## 3. Pricing & Plans
 
-Pasdiu offers flexible seat-based subscription tiers. All paid tiers include a 20% discount when billed annually.
+Pasdiu charges one flat price per workspace. There is no per-seat billing on any tier: the seat allowance is a ceiling, not a meter, so adding a teammate never changes the price. Client (reviewer) users are free and unlimited on every tier and never count against the seat allowance. Annual billing is 10x the monthly price — 2 months free, a ~17% discount.
+
+Version media is link-based: versions point at the customer's own storage (Google Drive, Dropbox, Frame.io), so media stays with the customer on every tier. Hosted media storage is a roadmap item, not a current entitlement.
 
 ### Tier Matrix
 
 1. **Free Tier**
    - **Cost**: $0 / month
-   - **Included Seats**: 2 seats included
-   - **Storage**: 5 GB active media storage
-   - **Features**: Core frame-accurate review, 7-day link retention, standard email notifications.
+   - **Team Seats**: 3
+   - **Limits**: 3 active clients, 500 active tasks, 50 active deliverables
+   - **Features**: Full pipeline (clients, projects, boards, Iteration Room), unlimited client reviewers, version history limited to the last 3 versions, community support.
 
 2. **Studio Tier (Most Popular)**
-   - **Monthly Billing**: $12 per seat / month
-   - **Annual Billing**: $10 per seat / month (billed annually)
-   - **Storage**: 500 GB active media storage
-   - **Features**: Unlimited review links, version wipe comparison, custom branding, guest approvals, priority support.
+   - **Monthly Billing**: $49 / month flat, per workspace
+   - **Annual Billing**: $490 / year (2 months free)
+   - **Team Seats**: up to 20
+   - **Limits**: unlimited active clients, 10,000 active tasks, 2,000 active deliverables
+   - **Features**: Everything in Free, plus full version history, Export Ledger (CSV), Analytics page, CSV Import Wizard, email support.
 
 3. **Agency Tier**
-   - **Monthly Billing**: $25 per seat / month
-   - **Annual Billing**: $21 per seat / month (billed annually)
-   - **Storage**: 2 TB active media storage
-   - **Features**: Multi-team workspaces, custom domain routing, SSO / SAML integration, audit logs, dedicated account manager.
+   - **Monthly Billing**: $149 / month flat, per workspace
+   - **Annual Billing**: $1,490 / year (2 months free)
+   - **Team Seats**: unlimited
+   - **Limits**: unlimited active clients, tasks, and deliverables
+   - **Features**: Everything in Studio, plus SSO / SAML, priority support.
 
 4. **Enterprise Tier**
-   - **Cost**: Custom pricing
-   - **Features**: Unlimited storage, custom SLA, on-premises / private Cloud storage connectors, custom WebMCP integration, dedicated support engineer.
+   - **Cost**: Custom pricing, billed annually
+   - **Features**: Everything in Agency, plus audit log, custom roles, dedicated support with SLA.
 
 ---
 
@@ -96,8 +100,8 @@ Pasdiu exposes tools via **WebMCP** (Model Context Protocol for Web):
 1. `get_site_info()`
    - Returns structured metadata about Pasdiu's product features, pricing tiers, and contact options.
 
-2. `calculate_pricing(tier, seats, billing)`
-   - Computes exact cost breakdowns based on parameters:
+2. `calculate_pricing(tier, billing, teamSize?)`
+   - Returns the flat per-workspace cost for a tier. Team size does not affect the price; it is only checked against the tier's seat allowance.
      - `tier`: `"free"` | `"studio"` | `"agency"`
-     - `seats`: Number of team members (integer >= 1)
      - `billing`: `"monthly"` | `"annual"`
+     - `teamSize` (optional): Number of team members (integer >= 1). Client reviewer users never count.
