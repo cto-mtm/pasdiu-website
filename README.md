@@ -58,7 +58,9 @@ firebase functions:secrets:set RECAPTCHA_SECRET_KEY
 Run the automated deploy script from the root directory:
 
 ```bash
-npm run deploy     # (or `npm run lunch`, or `./lunch.ps1`)
+npm run deploy                      # functions + hosting
+npm run deploy -- --only-hosting    # skip the functions deploy
+npm run deploy -- --dry-run         # print the steps, change nothing
 ```
 
 This automated script will:

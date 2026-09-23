@@ -1,0 +1,28 @@
+// Cookie-consent banner (CookieConsent.vue). Opt-in: nothing Google-side
+// loads until the visitor accepts.
+export default {
+  en: {
+    title: 'Analytics cookies',
+    body: 'We use Google Analytics to learn which content is useful. Nothing loads until you accept, and declining does not limit the site.',
+    policyLink: 'Read the privacy policy',
+    accept: 'Accept',
+    decline: 'Decline',
+    reopen: 'Cookie preferences',
+    close: 'Close',
+    current: 'Your current choice: {choice}.',
+    granted: 'analytics accepted',
+    denied: 'analytics declined',
+  },
+  es: {
+    title: 'Cookies de analítica',
+    body: 'Usamos Google Analytics para saber qué contenidos resultan útiles. No se carga nada hasta que aceptes, y rechazar no limita el sitio.',
+    policyLink: 'Ver política de privacidad',
+    accept: 'Aceptar',
+    decline: 'Rechazar',
+    reopen: 'Preferencias de cookies',
+    close: 'Cerrar',
+    current: 'Tu elección actual: {choice}.',
+    granted: 'analítica aceptada',
+    denied: 'analítica rechazada',
+  },
+}

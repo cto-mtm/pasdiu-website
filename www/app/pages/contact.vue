@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 // Getter syntax keeps meta reactive when the locale changes.
 useSeoMeta({
@@ -202,6 +203,32 @@ async function onSubmit() {
         >
           {{ status === 'sending' ? t('Contact.form.sending') : t('Contact.form.submit') }}
         </UButton>
+
+        <!-- Privacy notice at the point of collection: the policy has to be
+             one click away from the field that collects the data, not only
+             from the footer. -->
+        <p class="mt-4 text-xs leading-relaxed text-[var(--text-muted)]">
+          {{ t('Contact.form.privacy') }}
+          <NuxtLink :to="localePath('privacy')" class="text-[var(--accent-cyan)] underline underline-offset-2">
+            {{ t('Contact.form.privacyLink') }}
+          </NuxtLink>
+        </p>
+
+        <!--
+          Google's reCAPTCHA terms require either the floating badge or this
+          disclosure. Keep both in sync: if the badge is ever hidden in CSS,
+          this text is what keeps us compliant.
+        -->
+        <p class="mt-2 text-xs leading-relaxed text-[var(--text-muted)]">
+          {{ t('Contact.form.recaptchaNotice') }}
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline underline-offset-2">
+            {{ t('Contact.form.recaptchaPrivacy') }}
+          </a>
+          {{ t('Contact.form.recaptchaAnd') }}
+          <a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline underline-offset-2">
+            {{ t('Contact.form.recaptchaTerms') }}
+          </a>{{ t('Contact.form.recaptchaApply') }}
+        </p>
       </form>
     </section>
   </div>

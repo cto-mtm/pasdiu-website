@@ -53,6 +53,11 @@ export default defineNuxtConfig({
 
   gtag: {
     id: 'G-3JGD66480K',
+    // Opt-in consent: do NOT inject the GA script on load. Nothing Google-side
+    // loads (no script, no cookies) until the visitor accepts analytics in the
+    // cookie banner, which calls useGtag().initialize().
+    // See app/composables/useCookieConsent.ts + components/CookieConsent.vue.
+    initMode: 'manual',
   },
 
   site: {
